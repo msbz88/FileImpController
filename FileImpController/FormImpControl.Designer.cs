@@ -24,9 +24,9 @@
         /// </summary>
         private void InitializeComponent() {
             this.buttonCount = new System.Windows.Forms.Button();
-            this.textBoxNumRows = new System.Windows.Forms.TextBox();
             this.buttonConnect = new System.Windows.Forms.Button();
             this.richTextBoxMessages = new System.Windows.Forms.RichTextBox();
+            this.listViewTransCode = new System.Windows.Forms.ListView();
             this.SuspendLayout();
             // 
             // buttonCount
@@ -38,13 +38,6 @@
             this.buttonCount.Text = "Count";
             this.buttonCount.UseVisualStyleBackColor = true;
             this.buttonCount.Click += new System.EventHandler(this.ButtonCountClick);
-            // 
-            // textBoxNumRows
-            // 
-            this.textBoxNumRows.Location = new System.Drawing.Point(85, 84);
-            this.textBoxNumRows.Name = "textBoxNumRows";
-            this.textBoxNumRows.Size = new System.Drawing.Size(160, 20);
-            this.textBoxNumRows.TabIndex = 1;
             // 
             // buttonConnect
             // 
@@ -58,34 +51,43 @@
             // 
             // richTextBoxMessages
             // 
-            this.richTextBoxMessages.Location = new System.Drawing.Point(4, 139);
+            this.richTextBoxMessages.Location = new System.Drawing.Point(247, 137);
             this.richTextBoxMessages.Name = "richTextBoxMessages";
-            this.richTextBoxMessages.Size = new System.Drawing.Size(248, 184);
+            this.richTextBoxMessages.Size = new System.Drawing.Size(341, 184);
             this.richTextBoxMessages.TabIndex = 3;
             this.richTextBoxMessages.Text = "";
+            // 
+            // listViewTransCode
+            // 
+            this.listViewTransCode.GridLines = true;
+            this.listViewTransCode.Location = new System.Drawing.Point(4, 137);
+            this.listViewTransCode.Name = "listViewTransCode";
+            this.listViewTransCode.Size = new System.Drawing.Size(237, 184);
+            this.listViewTransCode.TabIndex = 4;
+            this.listViewTransCode.UseCompatibleStateImageBehavior = false;
+            this.listViewTransCode.View = System.Windows.Forms.View.Details;
             // 
             // FormImpControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(257, 333);
+            this.ClientSize = new System.Drawing.Size(600, 333);
+            this.Controls.Add(this.listViewTransCode);
             this.Controls.Add(this.richTextBoxMessages);
             this.Controls.Add(this.buttonConnect);
-            this.Controls.Add(this.textBoxNumRows);
             this.Controls.Add(this.buttonCount);
             this.Name = "FormImpControl";
             this.Text = "Import Control";
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
         private System.Windows.Forms.Button buttonCount;
-        private System.Windows.Forms.TextBox textBoxNumRows;
         private System.Windows.Forms.Button buttonConnect;
         private System.Windows.Forms.RichTextBox richTextBoxMessages;
+        private System.Windows.Forms.ListView listViewTransCode;
     }
 }
 

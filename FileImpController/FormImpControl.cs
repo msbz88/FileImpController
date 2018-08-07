@@ -14,14 +14,40 @@ using System.Data.Common;
 namespace FileImpController {
     public partial class FormImpControl : Form {
         OraDatabase OraDatabase { get; set; }
+        DateTime FromCrets { get; set; }
 
         public FormImpControl() {
             InitializeComponent();
+            InitListView();
+        }
+
+        private void InitListView() {
+            listViewTransCode.Columns.Add("Trans. Code", 150, HorizontalAlignment.Left);
+            listViewTransCode.Columns.Add("Count", 50, HorizontalAlignment.Left);
+        }
+
+        private void FillListView(DataTable dt) {
+            foreach (DataRow row in dt.Rows) {
+                ListViewItem item = new ListViewItem(row[0].ToString());
+                for (int i = 1; i < dt.Columns.Count; i++) {
+                    item.SubItems.Add(row[i].ToString());
+                }
+                listViewTransCode.Items.Add(item);
+            }
         }
 
         private void ButtonCountClick(object sender, EventArgs e) {
-            string query = "Select count(*) from TRANSMAIN";
-            textBoxNumRows.Text = OraDatabase.ExecuteQuery(query).ToString();
+            FromCrets = new DateTime(2017,5,1);
+            string query = "Select trc.trcbus, count(t.transik) " +
+                           "From TRANSMAIN t join TRCBUS trc on trc.trcbusno = t.trcbusno " +
+                           "Where t.tracan=0 and t.crets>=to_timestamp('01/05/2017 00:00:00','DD/MM/YYYY HH24:MI:SS') " +
+                           "Group by trc.trcbus " +
+                           "Order by trc.trcbus";
+            OracleCommand cmd = new OracleCommand(query, OraDatabase.Connection);
+            //cmd.Parameters.Add(":FromCrets", OracleDbType.Varchar2).Value = "01'-'05'-'2018 00:00:00";
+            DataTable dt = OraDatabase.ExecuteQuery(cmd);
+            //richTextBoxMessages.Text = FromCrets.ToString("dd'-'MM'-'yyyy HH:mm:ss");
+            FillListView(dt);
             OraDatabase.CloseConnection();
         }
 

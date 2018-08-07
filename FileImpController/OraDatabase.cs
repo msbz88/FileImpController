@@ -8,7 +8,7 @@ using Oracle.ManagedDataAccess.Client;
 
 namespace FileImpController {
     public class OraDatabase {
-        OracleConnection Connection { get; set; }
+        public OracleConnection Connection { get; set; }
         string ConnString { get; set; }
 
         public OraDatabase(string connString) {
@@ -17,11 +17,10 @@ namespace FileImpController {
 
         public string Connect() {
             try {
-                Connection = new OracleConnection {ConnectionString = ConnString};
+                Connection = new OracleConnection { ConnectionString = ConnString };
                 Connection.Open();
                 return "Connected to Oracle database: " + Connection.DatabaseName;
-            }
-            catch(Exception ex) {
+            } catch (Exception ex) {
                 return ex.ToString();
             }
         }
@@ -31,20 +30,13 @@ namespace FileImpController {
             Connection.Dispose();
         }
 
-        public int ExecuteQuery(string query) {
-            OracleCommand cmd = new OracleCommand(query, Connection);
+        public DataTable ExecuteQuery(OracleCommand cmd) {
+            DataTable dt = new DataTable();
             cmd.CommandType = CommandType.Text;
-            OracleDataReader dr = cmd.ExecuteReader();
-            int res = 0;
-            try {
-                while (dr.Read()) {
-                    res = (int)dr.GetDecimal(0);
-                }
-            }
-            finally {
-                dr.Close();
-            }
-            return res;
+            OracleDataAdapter da = new OracleDataAdapter(cmd);
+            OracleCommandBuilder cb = new OracleCommandBuilder(da);
+            da.Fill(dt);
+            return dt;
         }
 
 
