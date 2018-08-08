@@ -1,4 +1,4 @@
-﻿namespace FileImpController {
+﻿namespace ImportController {
     partial class FormImpControl {
         /// <summary>
         /// Required designer variable.
@@ -59,13 +59,16 @@
             // 
             // listViewTransCode
             // 
+            this.listViewTransCode.FullRowSelect = true;
             this.listViewTransCode.GridLines = true;
             this.listViewTransCode.Location = new System.Drawing.Point(4, 137);
             this.listViewTransCode.Name = "listViewTransCode";
             this.listViewTransCode.Size = new System.Drawing.Size(237, 184);
             this.listViewTransCode.TabIndex = 4;
+            this.listViewTransCode.TabStop = false;
             this.listViewTransCode.UseCompatibleStateImageBehavior = false;
             this.listViewTransCode.View = System.Windows.Forms.View.Details;
+            this.listViewTransCode.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.ListViewTransCodeColumnClick);
             // 
             // FormImpControl
             // 

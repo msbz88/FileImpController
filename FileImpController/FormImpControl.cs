@@ -11,7 +11,7 @@ using Oracle.ManagedDataAccess.Client;
 using Oracle.ManagedDataAccess.Types;
 using System.Data.Common;
 
-namespace FileImpController {
+namespace ImportController {
     public partial class FormImpControl : Form {
         OraDatabase OraDatabase { get; set; }
         DateTime FromCrets { get; set; }
@@ -43,13 +43,13 @@ namespace FileImpController {
                 string FromCretsStr = FromCrets.ToString("dd'/'MM'/'yyyy HH:mm:ss");
                 string query = "Select trc.trcbus, count(t.transik) " +
                                "From TRANSMAIN t join TRCBUS trc on trc.trcbusno = t.trcbusno " +
-                               "Where t.tracan=0 and t.crets>=to_timestamp(:FromCrets,'DD/MM/YYYY HH24:MI:SS') " +
+                               "Where t.tracan=0 and t.chgts>=to_timestamp(:FromChgts,'DD/MM/YYYY HH24:MI:SS') " +
                                "Group by trc.trcbus " +
                                "Order by trc.trcbus";
                 OracleCommand cmd = new OracleCommand(query, OraDatabase.Connection);
                 listViewTransCode.Items.Clear();
                 listViewTransCode.Items.Add("Calculating...");
-                cmd.Parameters.Add(":FromCrets", OracleDbType.Varchar2).Value = FromCretsStr;
+                cmd.Parameters.Add(":FromChgts", OracleDbType.Varchar2).Value = FromCretsStr;
                 DataTable dt = await OraDatabase.ExecuteQueryParallel(cmd);
                 FillListView(dt);
             } else {
@@ -63,6 +63,17 @@ namespace FileImpController {
                 OraDatabase = new OraDatabase(conStr);
                 richTextBoxMessages.Text = OraDatabase.Connect();
             }
+        }
+
+        private void ListViewTransCodeColumnClick(object sender, ColumnClickEventArgs e) {
+            ItemComparer sorter = listViewTransCode.ListViewItemSorter as ItemComparer;
+            if (sorter == null) {
+                sorter = new ItemComparer(e.Column);
+                listViewTransCode.ListViewItemSorter = sorter;
+            } else {
+                sorter.Column = e.Column;
+            }
+            listViewTransCode.Sort();
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Oracle.ManagedDataAccess.Client;
 
-namespace FileImpController {
+namespace ImportController {
     public class OraDatabase {
         public OracleConnection Connection { get; set; }
         string ConnString { get; set; }

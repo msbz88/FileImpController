@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace FileImpController.Properties {
+namespace ImportController.Properties {
 
 
     /// <summary>
