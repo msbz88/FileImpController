@@ -40,26 +40,29 @@ namespace FileImpController {
         private async void ButtonCountClick(object sender, EventArgs e) {
             if (OraDatabase != null) {
                 FromCrets = new DateTime(2017, 5, 1);
+                string FromCretsStr = FromCrets.ToString("dd'/'MM'/'yyyy HH:mm:ss");
                 string query = "Select trc.trcbus, count(t.transik) " +
                                "From TRANSMAIN t join TRCBUS trc on trc.trcbusno = t.trcbusno " +
-                               "Where t.tracan=0 and t.crets>=to_timestamp('01/05/2017 00:00:00','DD/MM/YYYY HH24:MI:SS') " +
+                               "Where t.tracan=0 and t.crets>=to_timestamp(:FromCrets,'DD/MM/YYYY HH24:MI:SS') " +
                                "Group by trc.trcbus " +
                                "Order by trc.trcbus";
                 OracleCommand cmd = new OracleCommand(query, OraDatabase.Connection);
-                //cmd.Parameters.Add(":FromCrets", OracleDbType.Varchar2).Value = "01'-'05'-'2018 00:00:00";
+                listViewTransCode.Items.Clear();
+                listViewTransCode.Items.Add("Calculating...");
+                cmd.Parameters.Add(":FromCrets", OracleDbType.Varchar2).Value = FromCretsStr;
                 DataTable dt = await OraDatabase.ExecuteQueryParallel(cmd);
-                //richTextBoxMessages.Text = FromCrets.ToString("dd'-'MM'-'yyyy HH:mm:ss");
                 FillListView(dt);
-                //OraDatabase.CloseConnection();
             } else {
                 richTextBoxMessages.Text = "Please connect first";
             }
         }
 
         private void ButtonConnectClick(object sender, EventArgs e) {
-            string conStr = "Data Source=(DESCRIPTION = (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = DK01SV7020)(PORT = 1521)))(CONNECT_DATA = (SID = T7020230)));User Id=TESTIMMD;Password=TESTIMMD;";
-            OraDatabase = new OraDatabase(conStr);
-            richTextBoxMessages.Text = OraDatabase.Connect();
+            if (OraDatabase == null) {
+                string conStr = "Data Source=(DESCRIPTION = (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = DK01SV7020)(PORT = 1521)))(CONNECT_DATA = (SID = T7020230)));User Id=TESTIMMD;Password=TESTIMMD;";
+                OraDatabase = new OraDatabase(conStr);
+                richTextBoxMessages.Text = OraDatabase.Connect();
+            }
         }
     }
 }
