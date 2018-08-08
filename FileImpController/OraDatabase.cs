@@ -30,7 +30,7 @@ namespace FileImpController {
             Connection.Dispose();
         }
 
-        public DataTable ExecuteQuery(OracleCommand cmd) {
+        private DataTable ExecuteQuery(OracleCommand cmd) {
             DataTable dt = new DataTable();
             cmd.CommandType = CommandType.Text;
             OracleDataAdapter da = new OracleDataAdapter(cmd);
@@ -39,6 +39,9 @@ namespace FileImpController {
             return dt;
         }
 
+        public Task<DataTable> ExecuteQueryParallel(OracleCommand cmd) {
+            return Task.Run(()=> ExecuteQuery(cmd));
+        }
 
     }
 }
