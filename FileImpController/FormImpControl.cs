@@ -48,12 +48,13 @@ namespace ImportController {
                                "Order by trc.trcbus";
                 OracleCommand cmd = new OracleCommand(query, OraDatabase.Connection);
                 listViewTransCode.Items.Clear();
-                listViewTransCode.Items.Add("Calculating...");
+                textBoxMessages.Text = "Calculating...";
                 cmd.Parameters.Add(":FromChgts", OracleDbType.Varchar2).Value = FromCretsStr;
                 DataTable dt = await OraDatabase.ExecuteQueryParallel(cmd);
                 FillListView(dt);
+                textBoxMessages.Text = "";
             } else {
-                richTextBoxMessages.Text = "Please connect first";
+                textBoxMessages.Text = "Please connect first";
             }
         }
 
@@ -61,7 +62,7 @@ namespace ImportController {
             if (OraDatabase == null) {
                 string conStr = "Data Source=(DESCRIPTION = (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = DK01SV7020)(PORT = 1521)))(CONNECT_DATA = (SID = T7020230)));User Id=TESTIMMD;Password=TESTIMMD;";
                 OraDatabase = new OraDatabase(conStr);
-                richTextBoxMessages.Text = OraDatabase.Connect();
+                textBoxMessages.Text = OraDatabase.Connect();
             }
         }
 
