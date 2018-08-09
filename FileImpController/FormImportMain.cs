@@ -12,11 +12,11 @@ using Oracle.ManagedDataAccess.Types;
 using System.Data.Common;
 
 namespace ImportController {
-    public partial class FormImpControl : Form {
-        OraDatabase OraDatabase { get; set; }
+    public partial class FormImportMain : Form {
+        OraSession OraSession { get; set; }
         DateTime FromCrets { get; set; }
 
-        public FormImpControl() {
+        public FormImportMain() {
             InitializeComponent();
             InitListView();
         }
@@ -38,7 +38,7 @@ namespace ImportController {
         }
 
         private async void ButtonCountClick(object sender, EventArgs e) {
-            if (OraDatabase != null) {
+            if (OraSession != null) {
                 FromCrets = new DateTime(2017, 5, 1);
                 string FromCretsStr = FromCrets.ToString("dd'/'MM'/'yyyy HH:mm:ss");
                 string query = "Select trc.trcbus, count(t.transik) " +
@@ -46,11 +46,11 @@ namespace ImportController {
                                "Where t.tracan=0 and t.chgts>=to_timestamp(:FromChgts,'DD/MM/YYYY HH24:MI:SS') " +
                                "Group by trc.trcbus " +
                                "Order by trc.trcbus";
-                OracleCommand cmd = new OracleCommand(query, OraDatabase.Connection);
+                OracleCommand cmd = new OracleCommand(query, OraSession.Connection);
                 listViewTransCode.Items.Clear();
                 textBoxMessages.Text = "Calculating...";
                 cmd.Parameters.Add(":FromChgts", OracleDbType.Varchar2).Value = FromCretsStr;
-                DataTable dt = await OraDatabase.ExecuteQueryParallel(cmd);
+                DataTable dt = await OraSession.ExecuteQueryParallel(cmd);
                 FillListView(dt);
                 textBoxMessages.Text = "";
             } else {
@@ -59,22 +59,15 @@ namespace ImportController {
         }
 
         private void ButtonConnectClick(object sender, EventArgs e) {
-            if (OraDatabase == null) {
-                string conStr = "Data Source=(DESCRIPTION = (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = DK01SV7020)(PORT = 1521)))(CONNECT_DATA = (SID = T7020230)));User Id=TESTIMMD;Password=TESTIMMD;";
-                OraDatabase = new OraDatabase(conStr);
-                textBoxMessages.Text = OraDatabase.Connect();
+            if (OraSession == null) {
+                Connection Connection = new Connection(host: "DK01SV7020", port:"1521", sid: "T7020230", schema: "TESTIMMD", password: "TESTIMMD");
+                OraSession = new OraSession(Connection.Data);
+                textBoxMessages.Text = OraSession.Connect();
             }
         }
 
         private void ListViewTransCodeColumnClick(object sender, ColumnClickEventArgs e) {
-            ItemComparer sorter = listViewTransCode.ListViewItemSorter as ItemComparer;
-            if (sorter == null) {
-                sorter = new ItemComparer(e.Column);
-                listViewTransCode.ListViewItemSorter = sorter;
-            } else {
-                sorter.Column = e.Column;
-            }
-            listViewTransCode.Sort();
+
         }
     }
 }

@@ -1,8 +1,8 @@
-﻿namespace FileImpController {
+﻿namespace ImportController {
     public class Connection {
         public string Data { get; set; }
 
-        public Connection(string data, string host, string port, string sid, string serviceName, string schema, string password) {
+        public Connection(string host, string port, string schema, string password, string sid= "", string serviceName = "") {
             string sidOrServiceName = "";
             if (sid=="") {
                 sidOrServiceName = "SERVICE_NAME=" + serviceName;

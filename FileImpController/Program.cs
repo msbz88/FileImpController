@@ -13,7 +13,7 @@ namespace ImportController {
         static void Main() {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormImpControl());
+            Application.Run(new FormImportMain());
         }
     }
 }

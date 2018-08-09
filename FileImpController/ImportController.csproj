@@ -49,18 +49,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Connection.cs" />
-    <Compile Include="FormImpControl.cs">
+    <Compile Include="FormImportMain.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormImpControl.Designer.cs">
-      <DependentUpon>FormImpControl.cs</DependentUpon>
+    <Compile Include="FormImportMain.Designer.cs">
+      <DependentUpon>FormImportMain.cs</DependentUpon>
     </Compile>
     <Compile Include="ListViewItemComparer.cs" />
-    <Compile Include="OraDatabase.cs" />
+    <Compile Include="OraSession.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="FormImpControl.resx">
-      <DependentUpon>FormImpControl.cs</DependentUpon>
+    <EmbeddedResource Include="FormImportMain.resx">
+      <DependentUpon>FormImportMain.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -1,5 +1,5 @@
 ﻿namespace ImportController {
-    partial class FormImpControl {
+    partial class FormImportMain {
         /// <summary>
         /// Required designer variable.
         /// </summary>

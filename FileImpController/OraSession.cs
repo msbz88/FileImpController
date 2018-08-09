@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 using Oracle.ManagedDataAccess.Client;
 
 namespace ImportController {
-    public class OraDatabase {
+    public class OraSession {
         public OracleConnection Connection { get; set; }
         string ConnString { get; set; }
 
-        public OraDatabase(string connString) {
+        public OraSession(string connString) {
             ConnString = connString;
         }
 
